@@ -5,9 +5,9 @@ module FIFO #(
     input clk,
     input reset_n,
     input wr_en,
-    input [7:0] wr_data,
+    input [DATA-WIDTH-1:0] wr_data,
     input rd_en,
-    output logic [7:0] rd_data,
+    output logic [DATA-WIDTH-1:0] rd_data,
     output logic full,
     output logic empty,
     output logic almost_full,
@@ -31,16 +31,20 @@ module FIFO #(
             wr_ptr <= 0;
             rd_ptr <= 0;
             counter <= 0;
+            memory <= 0;
         end else if (wr_en && rd_en && !full & !empty) begin
-            //simultaneous read and write logic here
+            //simultaneous read and write logic here, do read first then write
         end else if (wr_en && !full) begin
-            //write logic here
+            memory[wr_ptr] <= wr_data;
+            wr_ptr <= wr_ptr + 1'b1;
         end else if (rd_en && !empty) begin
-            //read logic here
+            memory[rd_ptr] <= 0;
+            rd_ptr <= rd_ptr + 1'b1;
         end else begin
             wr_ptr <= wr_ptr;
             rd_ptr <= rd_ptr;
             counter <= counter;
+            memory <= memory;
         end
     end
 
