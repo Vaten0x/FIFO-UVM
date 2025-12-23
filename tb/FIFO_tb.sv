@@ -1,7 +1,7 @@
-module FIFO_tb #(
-    parameter DATA_WIDTH = 8,
-    parameter DEPTH = 16
-); //simple testbench
+module FIFO_tb; //simple testbench
+
+    localparam DATA_WIDTH = 8;
+    localparam DEPTH = 16;
 
     logic clk;
     logic reset_n; // active-low button
@@ -35,7 +35,7 @@ module FIFO_tb #(
         forever #10 clk = ~clk; // 50MHz clock
     end
 
-    initlal begin
+    initial begin
         reset_n = 1'b0; //reset on
         wr_en = 1'b0;
         wr_data = 8'd0;
