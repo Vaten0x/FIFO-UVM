@@ -1,6 +1,6 @@
 module FIFO #(
     parameter DATA_WIDTH = 8,
-    parameter DEPTH = 16 // expects DEPTH to be at least > 2
+    parameter DEPTH = 16 // expects DEPTH to be at least > 3
 )(
     input clk,
     input reset_n,
@@ -19,6 +19,7 @@ module FIFO #(
     logic [ADDR_WIDTH-1:0] wr_ptr;
     logic [ADDR_WIDTH-1:0] rd_ptr;
     logic [ADDR_WIDTH-1:0] counter;
+    logic [DATA_WIDTH-1:0] memory [ADDR_WIDTH-1:0];
 
     assign full = (counter == DEPTH);
     assign empty = (counter == 0);
@@ -27,7 +28,9 @@ module FIFO #(
 
     always @(posedge clk) begin
         if (reset_n) begin
-            //reset logic here
+            wr_ptr <= 0;
+            rd_ptr <= 0;
+            counter <= 0;
         end else if (wr_en && rd_en && !full & !empty) begin
             //simultaneous read and write logic here
         end else if (wr_en && !full) begin
