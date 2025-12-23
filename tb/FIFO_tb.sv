@@ -1,10 +1,10 @@
 module FIFO #(
     parameter DATA_WIDTH = 8,
     parameter DEPTH = 16
-); //Simple testbench
+); //simple testbench
 
     logic clk;
-    logic reset_n;
+    logic reset_n; // active-low button
     logic wr_en;
     logic [7:0] wr_data;
     logic rd_en;
@@ -33,6 +33,15 @@ module FIFO #(
     initial begin
         clk = 0;
         forever #10 clk = ~clk; // 50MHz clock
+    end
+
+    initlal begin
+        reset_n = 1'b0;
+        wr_en = 1'b0;
+        wr_data = 8'd0;
+        rd_en = 1'b0;
+
+        #100;
     end
 
 endmodule

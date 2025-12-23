@@ -3,7 +3,7 @@ module FIFO #(
     parameter DEPTH = 16 // expects DEPTH to be at least > 3
 )(
     input clk,
-    input reset_n,
+    input reset_n, //active-low button
     input wr_en,
     input [DATA-WIDTH-1:0] wr_data,
     input rd_en,
@@ -27,7 +27,7 @@ module FIFO #(
     assign almost_empty = (counter <= 2);
 
     always @(posedge clk) begin
-        if (reset_n) begin
+        if (!reset_n) begin
             wr_ptr <= 0;
             rd_ptr <= 0;
             counter <= 0;
