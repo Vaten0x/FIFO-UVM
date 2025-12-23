@@ -1,4 +1,4 @@
-module FIFO #(
+module FIFO_tb #(
     parameter DATA_WIDTH = 8,
     parameter DEPTH = 16
 ); //simple testbench
