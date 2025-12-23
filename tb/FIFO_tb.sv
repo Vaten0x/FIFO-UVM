@@ -36,11 +36,12 @@ module FIFO #(
     end
 
     initlal begin
-        reset_n = 1'b0;
+        reset_n = 1'b0; //reset on
         wr_en = 1'b0;
         wr_data = 8'd0;
         rd_en = 1'b0;
-
+        #100;
+        reset_n = 1'b1; //reset off
         #100;
     end
 
