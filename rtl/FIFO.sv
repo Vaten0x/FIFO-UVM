@@ -5,7 +5,7 @@ module FIFO #(
     input clk,
     input reset_n, //active-low button
     input wr_en,
-    input [DATA-WIDTH-1:0] wr_data,
+    input [DATA_WIDTH-1:0] wr_data,
     input rd_en,
     output logic [DATA-WIDTH-1:0] rd_data,
     output logic full,
@@ -37,9 +37,11 @@ module FIFO #(
         end else if (wr_en && !full) begin
             memory[wr_ptr] <= wr_data;
             wr_ptr <= wr_ptr + 1'b1;
+            counter <= counter + 1'b1;
         end else if (rd_en && !empty) begin
             memory[rd_ptr] <= 0;
             rd_ptr <= rd_ptr + 1'b1;
+            counter <= counter - 1'b1;
         end else begin
             wr_ptr <= wr_ptr;
             rd_ptr <= rd_ptr;
