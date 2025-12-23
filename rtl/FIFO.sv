@@ -5,7 +5,7 @@ module FIFO #(
     input clk,
     input reset_n, //active-low button
     input wr_en,
-    input [DATA_WIDTH_1:0] wr_data,
+    input [DATA_WIDTH-1:0] wr_data,
     input rd_en,
     output logic [DATA_WIDTH-1:0] rd_data,
     output logic full,
