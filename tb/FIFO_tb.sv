@@ -1,9 +1,7 @@
-// simple testbench
-
 module FIFO #(
     parameter DATA_WIDTH = 8,
     parameter DEPTH = 16
-);
+); //Simple testbench
 
     logic clk;
     logic reset_n;

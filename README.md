@@ -27,4 +27,12 @@ Outputs:
 - almost_full: FIFO almost full flag
 - almost_empty: FIFO almost empty flag
 
-UVM Testbench Features:
+Things to test:
+- Reset behavior
+- Normal write and read operations
+- Full and empty conditions
+- Almost full and almost empty conditions
+- Simultaneous read and write operations
+- Illegal operations (writing when full, reading when empty)
+- Boundary conditions (e.g., writing to the last entry, reading from the first entry)
+- Wrap-around behavior of read and write pointers
