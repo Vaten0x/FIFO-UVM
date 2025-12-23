@@ -42,7 +42,8 @@ module FIFO #(
         rd_en = 1'b0;
         #100;
         reset_n = 1'b1; //reset off
-        #100;
+        #100; 
+        $finish;
     end
 
 endmodule
