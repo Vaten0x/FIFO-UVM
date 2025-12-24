@@ -1,1 +1,17 @@
-/simv.daidir
+# VCS generated files
+csrc/
+simv*
+*simv.daidir/
+ucli.key
+*_pin_model_dump.txt
+
+# Verdi generated files
+verdiLog/
+novas.rc
+novas.conf
+novas.fsdb*
+novas_dump.log
+*.fsdb
+.inter.fsdb*
+inter.fsdb*
+.vcs*
