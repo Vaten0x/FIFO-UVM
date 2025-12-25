@@ -4,6 +4,11 @@ simv*
 *simv.daidir/
 ucli.key
 *_pin_model_dump.txt
+/fifo_cov.vdb
+/vdCovLog
+cm.log
+vdCov.conf
+.fsm.sch.verilog.xml
 
 # Verdi generated files
 verdiLog/
