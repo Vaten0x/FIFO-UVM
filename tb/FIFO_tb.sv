@@ -49,7 +49,7 @@ module FIFO_tb(); //simple testbench
 
     initial begin
         $fsdbDumbfile("novas.fsdb");
-        $fsdbDumpvars(0, FIFO_tb);
+        $fsdbDumbvars(0, FIFO_tb);
     end
 
 endmodule
