@@ -1,4 +1,4 @@
-module FIFO_tb; //simple testbench
+module FIFO_tb(); //simple testbench
 
     localparam DATA_WIDTH = 8;
     localparam DEPTH = 16;
@@ -31,11 +31,6 @@ module FIFO_tb; //simple testbench
     );
 
     initial begin
-        $fsdbDumbfile("novas.fsdb");
-        $fsdbDumpvars(0, FIFO_tb);
-    end
-
-    initial begin
         clk = 0;
         forever #10 clk = ~clk; // 50MHz clock
     end
@@ -47,8 +42,14 @@ module FIFO_tb; //simple testbench
         rd_en = 1'b0;
         #100;
         reset_n = 1'b1; //reset off
-        #100; 
+        #100;
+
         $finish;
+    end
+
+    initial begin
+        $fsdbDumbfile("novas.fsdb");
+        $fsdbDumpvars(0, FIFO_tb);
     end
 
 endmodule
