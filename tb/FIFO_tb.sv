@@ -42,7 +42,10 @@ module FIFO_tb(); //simple testbench
         rd_en = 1'b0;
         #100;
         reset_n = 1'b1; //reset off
-        #100;
+        #15;
+        wr_en = 1'b1;
+        wr_data = 8'b00000001;
+        #20;
 
         $finish;
     end
