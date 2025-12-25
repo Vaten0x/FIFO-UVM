@@ -31,6 +31,11 @@ module FIFO_tb; //simple testbench
     );
 
     initial begin
+        $fsdbDumbfile("novas.fsdb");
+        $fsdbDumpvars(0, FIFO_tb);
+    end
+
+    initial begin
         clk = 0;
         forever #10 clk = ~clk; // 50MHz clock
     end
