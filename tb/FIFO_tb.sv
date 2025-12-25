@@ -46,6 +46,10 @@ module FIFO_tb(); //simple testbench
         wr_en = 1'b1;
         wr_data = 8'b00000001;
         #20;
+        //empty should be 0 and almost_empty should be 1
+        wr_en = 1'b1;
+        wr_data = 8'b00000010;
+        #20;
 
         $finish;
     end
