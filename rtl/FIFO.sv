@@ -1,6 +1,6 @@
 module FIFO #(
     parameter DATA_WIDTH = 8,
-    parameter DEPTH = 16 // expects DEPTH to be at least > 3
+    parameter DEPTH = 16
 )(
     input clk,
     input reset_n, //active-low button

@@ -36,7 +36,7 @@ module FIFO_tb(); //simple testbench
     end
 
     initial begin
-        //instantiate
+        // Instantiate everything before running test
         reset_n = 1'b0; //reset on
         wr_en = 1'b0;
         wr_data = 8'd0;
@@ -48,18 +48,26 @@ module FIFO_tb(); //simple testbench
         // Write one entry with data = 8'd1
         wr_en = 1'b1;
         wr_data = 8'b00000001;
+        assert(dut.counter == 4'b0000) else $error("counter error #1");
+        assert(dut.wr_ptr == 4'b0000) else $error("wr_ptr error #1");
+        assert(dut.rd_ptr == 4'b0000) else $error("rd_ptr error #1");
         assert(dut.full == 1'b0) else $error("full flag error");
         assert(dut.almost_full == 1'b0) else $error("almost_full flag error");
         assert(dut.empty == 1'b1) else $error("empty flag error");
         assert(dut.almost_empty == 1'b1) else $error("almost empty flag error");
+        $display("Test 1 finished");
         #20;
 
         // Write another entry with data 8'd2
         assert(dut.memory[0] == 8'b00000001) else $error("Date memory Issue #1");
+        assert(dut.counter == 4'b0000) else $error("counter error #2");
+        assert(dut.wr_ptr == 4'b0001) else $error("wr_ptr error #1");
+        assert(dut.rd_ptr == 4'b0000) else $error("rd_ptr error #1");
         assert(dut.full == 1'b0) else $error("full flag error");
         assert(dut.almost_full == 1'b0) else $error("almost_full flag error");
         assert(dut.empty == 1'b0) else $error("empty flag error");
         assert(dut.almost_empty == 1'b1) else $error("almost empty flag error");
+        $display("Test 2 finished");
         wr_en = 1'b1;
         wr_data = 8'b00000010;
         #20;
