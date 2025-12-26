@@ -79,6 +79,7 @@ module FIFO_tb(); //simple testbench
         assert(dut.almost_full == 1'b0) else $error("almost_full flag error");
         assert(dut.empty == 1'b0) else $error("empty flag error");
         assert(dut.almost_empty == 1'b1) else $error("almost empty flag error");
+        $display("Test 3 finished");
 
         // Test 4 - Read entry with data = 8'd1 
         wr_en = 1'b0;
@@ -93,6 +94,7 @@ module FIFO_tb(); //simple testbench
         assert(dut.almost_full == 1'b0) else $error("almost_full flag error");
         assert(dut.empty == 1'b0) else $error("empty flag error");
         assert(dut.almost_empty == 1'b1) else $error("almost empty flag error");
+        $display("Test 4 finished");
 
         // Test 5 - Write another entry with data = 8'd3
         wr_en = 1'b1;
@@ -107,6 +109,7 @@ module FIFO_tb(); //simple testbench
         assert(dut.almost_full == 1'b0) else $error("almost_full flag error");
         assert(dut.empty == 1'b0) else $error("empty flag error");
         assert(dut.almost_empty == 1'b1) else $error("almost empty flag error");
+        $display("Test 5 finished");
 
         // Test 5 - Write another entry with data = 8'd4
         wr_en = 1'b1;
@@ -120,7 +123,9 @@ module FIFO_tb(); //simple testbench
         assert(dut.almost_full == 1'b0) else $error("almost_full flag error");
         assert(dut.empty == 1'b0) else $error("empty flag error");
         assert(dut.almost_empty == 1'b0) else $error("almost empty flag error");
+        $display("Test 6 finished");
 
+        $display("All tests finished");
         $finish;
     end
 
