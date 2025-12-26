@@ -38,7 +38,7 @@ module FIFO #(
             wr_ptr <= wr_ptr + 1'b1;
             counter <= counter + 1'b1;
         end else if (rd_en && !empty) begin
-            memory[rd_ptr] <= 0;
+            rd_data <= memory[rd_ptr];
             rd_ptr <= rd_ptr + 1'b1;
             counter <= counter - 1'b1;
         end else begin

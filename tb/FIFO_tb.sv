@@ -57,7 +57,7 @@ module FIFO_tb(); //simple testbench
         wr_en = 1'b1;
         wr_data = 8'b00000001;
         #20;
-        assert(dut.memory[0] == 8'b00000001) else $error("Date memory Error #1");
+        assert(dut.memory[0] == 8'b00000001) else $error("Data memory Error #1");
         assert(dut.counter == 4'b0001) else $error("counter error #2");
         assert(dut.wr_ptr == 4'b0001) else $error("wr_ptr error #1");
         assert(dut.rd_ptr == 4'b0000) else $error("rd_ptr error #1");
@@ -71,7 +71,7 @@ module FIFO_tb(); //simple testbench
         wr_en = 1'b1;
         wr_data = 8'b00000010;
         #20;
-        assert(dut.memory[1] == 8'b00000010) else $error("Date memory Error #2");
+        assert(dut.memory[1] == 8'b00000010) else $error("Data memory Error #2");
         assert(dut.counter == 4'b0010) else $error("counter error #3");
         assert(dut.wr_ptr == 4'b0010) else $error("wr_ptr error #2");
         assert(dut.rd_ptr == 4'b0000) else $error("rd_ptr error #2");
@@ -84,8 +84,8 @@ module FIFO_tb(); //simple testbench
         wr_en = 1'b0;
         rd_en = 1'b1;
         #20;
-        assert(rd_data == 8'b00000001) else $error("Read date Error #1")
-        assert(dut.memory[1] == 8'b00000010) else $error("Date memory Error #3");
+        assert(rd_data == 8'b00000001) else $error("Read Data Error #1");
+        assert(dut.memory[1] == 8'b00000010) else $error("Data memory Error #3");
         assert(dut.counter == 4'b0001) else $error("counter error #4");
         assert(dut.wr_ptr == 4'b0010) else $error("wr_ptr error #3");
         assert(dut.rd_ptr == 4'b0001) else $error("rd_ptr error #3");
@@ -94,7 +94,32 @@ module FIFO_tb(); //simple testbench
         assert(dut.empty == 1'b0) else $error("empty flag error");
         assert(dut.almost_empty == 1'b1) else $error("almost empty flag error");
 
-        // Test 4 - Write another entry with data = 8'd3
+        // Test 5 - Write another entry with data = 8'd3
+        wr_en = 1'b1;
+        rd_en = 1'b0;
+        wr_data = 8'b00000011;
+        #20;
+        assert(dut.memory[2] == 8'b00000011) else $error("Data memory Error #4");
+        assert(dut.counter == 4'b0010) else $error("counter error #5");
+        assert(dut.wr_ptr == 4'b0011) else $error("wr_ptr error #4");
+        assert(dut.rd_ptr == 4'b0001) else $error("rd_ptr error #4");
+        assert(dut.full == 1'b0) else $error("full flag error");
+        assert(dut.almost_full == 1'b0) else $error("almost_full flag error");
+        assert(dut.empty == 1'b0) else $error("empty flag error");
+        assert(dut.almost_empty == 1'b1) else $error("almost empty flag error");
+
+        // Test 5 - Write another entry with data = 8'd4
+        wr_en = 1'b1;
+        wr_data = 8'b00000100;
+        #20;
+        assert(dut.memory[3] == 8'b00000100) else $error("Data memory Error #5");
+        assert(dut.counter == 4'b0011) else $error("counter error #6");
+        assert(dut.wr_ptr == 4'b0100) else $error("wr_ptr error #5");
+        assert(dut.rd_ptr == 4'b0001) else $error("rd_ptr error #5");
+        assert(dut.full == 1'b0) else $error("full flag error");
+        assert(dut.almost_full == 1'b0) else $error("almost_full flag error");
+        assert(dut.empty == 1'b0) else $error("empty flag error");
+        assert(dut.almost_empty == 1'b0) else $error("almost empty flag error");
 
         $finish;
     end
