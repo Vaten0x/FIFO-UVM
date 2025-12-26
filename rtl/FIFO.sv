@@ -11,7 +11,7 @@ module FIFO #(
     output logic full,
     output logic empty,
     output logic almost_full,
-    output logic almost_empty 
+    output logic almost_empty
 );
 
     localparam ADDR_WIDTH = $clog2(DEPTH);
