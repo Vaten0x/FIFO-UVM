@@ -105,6 +105,7 @@ module FIFO_tb(); //simple testbench
         wr_data = 8'b00000011;
         #20;
         // [ null, 2, 3, null, null, null, null, null, null, null, null, null, null, null, null, null ]
+        // $display("dut.memory[2]: ", dut.memory[2]);
         assert(dut.memory[2] == 8'b00000011) else $error("Data memory Error #4");
         assert(dut.counter == 4'b0010) else $error("counter error #5");
         assert(dut.wr_ptr == 4'b0011) else $error("wr_ptr error #4");
@@ -135,6 +136,7 @@ module FIFO_tb(); //simple testbench
         wr_data = 8'b00000101;
         #20;
         // [ null, 2, 3, 4, 5, null, null, null, null, null, null, null, null, null, null, null ]
+        // $display("dut.memory[4]: ", dut.memory[4]);
         assert(dut.memory[4] == 8'b00000101) else $error("Data memory Error #6");
         assert(dut.counter == 4'b0100) else $error("counter error #7");
         assert(dut.wr_ptr == 4'b0101) else $error("wr_ptr error #6");

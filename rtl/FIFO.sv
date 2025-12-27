@@ -14,12 +14,13 @@ module FIFO #(
     output logic almost_empty
 );
 
+    // With DEPTH 16, ADDR_WIDTH is 4
     localparam ADDR_WIDTH = $clog2(DEPTH);
 
     logic [ADDR_WIDTH-1:0] wr_ptr;
     logic [ADDR_WIDTH-1:0] rd_ptr;
     logic [ADDR_WIDTH-1:0] counter;
-    logic [DATA_WIDTH-1:0] memory [ADDR_WIDTH-1:0];
+    logic [ADDR_WIDTH-1:0] memory [DATA_WIDTH-1:0];
 
     assign full = (counter == DEPTH);
     assign empty = (counter == 0);
