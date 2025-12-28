@@ -1,5 +1,4 @@
 module FIFO_tb(); //simple testbench
-
     localparam DATA_WIDTH = 8;
     localparam DEPTH = 16;
 
@@ -468,5 +467,11 @@ module FIFO_tb(); //simple testbench
         $fsdbDumpfile("novas.fsdb");
         $fsdbDumpvars(0, FIFO_tb);
     end
+
+    property counter_in_range;
+        @(posedge clk) dut.counter <= DEPTH;
+    endproperty
+
+    assert property (counter_in_range);
 
 endmodule
