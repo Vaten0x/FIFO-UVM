@@ -333,6 +333,7 @@ module FIFO_tb(); //simple testbench
         wr_data = 8'd18;
         #20;
         // [ 17, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ]
+        assert(rd_data == 8'd1) else $error("Read Data Error #2"); // See if read data is still the same as before
         assert(dut.memory[0] == 8'd17) else $error("Data memory Error #18");
         assert(dut.counter == 5'd16) else $error("counter error #19");
         assert(dut.wr_ptr == 4'd1) else $error("wr_ptr error #18");
@@ -343,9 +344,36 @@ module FIFO_tb(); //simple testbench
         assert(dut.almost_empty == 1'b0) else $error("almost empty flag error");
         $display("Test 20 finished");
 
+        // Test 21 - Read entry with data = 8'd2 WHEN FIFO IS FULL
+        rd_en = 1'b1;
+        wr_en = 1'b0;
+        #20;
+        // [ 17, null, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ]
+        assert(rd_data == 8'd2) else $error("Read Data Error #3");
+        assert(dut.memory[0] == 8'd17) else $error("Data memory Error #19");
+        assert(dut.counter == 5'd15) else $error("counter error #20");
+        assert(dut.wr_ptr == 4'd1) else $error("wr_ptr error #19");
+        assert(dut.rd_ptr == 4'd2) else $error("rd_ptr error #19");
+        assert(dut.full == 1'b0) else $error("full flag error");
+        assert(dut.almost_full == 1'b1) else $error("almost_full flag error");
+        assert(dut.empty == 1'b0) else $error("empty flag error");
+        assert(dut.almost_empty == 1'b0) else $error("almost empty flag error");
+        $display("Test 21 finished");
 
-
-
+        // Test 22 - Read entry with data = 8'd3 WHEN FIFO IS FULL
+        rd_en = 1'b1;
+        #20;
+        // [ 17, null, null, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ]
+        assert(rd_data == 8'd3) else $error("Read Data Error #4");
+        assert(dut.memory[0] == 8'd17) else $error("Data memory Error #20");
+        assert(dut.counter == 5'd14) else $error("counter error #21");
+        assert(dut.wr_ptr == 4'd1) else $error("wr_ptr error #20");
+        assert(dut.rd_ptr == 4'd2) else $error("rd_ptr error #20");
+        assert(dut.full == 1'b0) else $error("full flag error");
+        assert(dut.almost_full == 1'b1) else $error("almost_full flag error");
+        assert(dut.empty == 1'b0) else $error("empty flag error");
+        assert(dut.almost_empty == 1'b0) else $error("almost empty flag error");
+        $display("Test 22 finished");
 
         // test reset
 
