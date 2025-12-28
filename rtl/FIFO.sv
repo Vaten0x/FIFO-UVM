@@ -20,7 +20,7 @@ module FIFO #(
     logic [ADDR_WIDTH-1:0] wr_ptr;
     logic [ADDR_WIDTH-1:0] rd_ptr;
     logic [ADDR_WIDTH-1:0] counter;
-    logic [ADDR_WIDTH-1:0] memory [DATA_WIDTH-1:0];
+    logic [DATA_WIDTH-1:0] memory [DEPTH-1:0];
 
     assign full = (counter == DEPTH);
     assign empty = (counter == 0);
