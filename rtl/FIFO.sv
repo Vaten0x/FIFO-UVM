@@ -19,7 +19,7 @@ module FIFO #(
 
     logic [ADDR_WIDTH-1:0] wr_ptr;
     logic [ADDR_WIDTH-1:0] rd_ptr;
-    logic [ADDR_WIDTH-1:0] counter;
+    logic [ADDR_WIDTH:0] counter; // Extra bit for representing 16 when it's full
     logic [DATA_WIDTH-1:0] memory [DEPTH-1:0];
 
     assign full = (counter == DEPTH);
@@ -33,14 +33,14 @@ module FIFO #(
             rd_ptr <= 0;
             counter <= 0;
         end else if (wr_en && rd_en && !full & !empty) begin
-            //simultaneous read and write logic here, do read first then write
+            // Simultaneous read and write logic here, do read first then write
         end else if (wr_en && !full) begin
             memory[wr_ptr] <= wr_data;
-            wr_ptr <= wr_ptr + 1'b1;
+            wr_ptr <= (wr_ptr == 5'd15) ? 5'd0 : wr_ptr + 1'b1;
             counter <= counter + 1'b1;
         end else if (rd_en && !empty) begin
             rd_data <= memory[rd_ptr];
-            rd_ptr <= rd_ptr + 1'b1;
+            rd_ptr <= (rd_ptr == 5'd15) ? 5'd0 : rd_ptr + 1'b1;
             counter <= counter - 1'b1;
         end else begin
             wr_ptr <= wr_ptr;
