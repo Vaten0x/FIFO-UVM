@@ -325,9 +325,10 @@ module FIFO_tb(); //simple testbench
         assert(dut.almost_full == 1'b1) else $error("almost_full flag error");
         assert(dut.empty == 1'b0) else $error("empty flag error");
         assert(dut.almost_empty == 1'b0) else $error("almost empty flag error");
-        $display("Test 18 finished");
+        $display("Test 19 finished");
 
         // Test 20 - Write another entry with data = 8'd18 WHEN FIFO IS FULL
+        // It should not write any new entries, no changes to ptr, counter and memory
         wr_en = 1'b1;
         wr_data = 8'd18;
         #20;
@@ -341,6 +342,16 @@ module FIFO_tb(); //simple testbench
         assert(dut.empty == 1'b0) else $error("empty flag error");
         assert(dut.almost_empty == 1'b0) else $error("almost empty flag error");
         $display("Test 20 finished");
+
+
+
+
+
+        // test reset
+
+        // test empty read
+
+        // test simultaneous read + write
 
         $display("All tests finished");
         $finish;
