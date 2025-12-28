@@ -28,11 +28,10 @@ Outputs:
 - almost_empty: FIFO almost empty flag
 
 Things to test:
-- Reset behavior
+- Reset Behavior at different scenarios (reset on and off when other vars are on)
 - Normal write and read operations
 - Full and empty conditions
 - Almost full and almost empty conditions
-- Simultaneous read and write operations
+- Simultaneous read and write operations (even when empty and full, only the write should operate if empty and read if full)
 - Illegal operations (writing when full, reading when empty)
-- Boundary conditions (e.g., writing to the last entry, reading from the first entry)
-- Wrap-around behavior of read and write pointers
+- Wrap-around behavior of read and write pointers (ring buffer implementation)
