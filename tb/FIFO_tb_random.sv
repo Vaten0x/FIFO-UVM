@@ -70,9 +70,9 @@ module FIFO_tb_random();
 
                 assert(rd_data == expected_result) else $error("Data Output Mismatch Counter=%0d, Queue=%0d", dut.counter, queue_ref.size());
             end
-
-            $finish
         end
+
+        $finish;
     end
 
     initial begin
