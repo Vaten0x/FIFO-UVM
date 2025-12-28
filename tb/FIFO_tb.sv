@@ -360,7 +360,7 @@ module FIFO_tb(); //simple testbench
         assert(dut.almost_empty == 1'b0) else $error("almost empty flag error");
         $display("Test 21 finished");
 
-        // Test 22 - Read entry with data = 8'd3 WHEN FIFO IS FULL
+        // Test 22 - Read entry with data = 8'd3
         rd_en = 1'b1;
         #20;
         // [ 17, null, null, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ]
@@ -368,18 +368,116 @@ module FIFO_tb(); //simple testbench
         assert(dut.memory[0] == 8'd17) else $error("Data memory Error #20");
         assert(dut.counter == 5'd14) else $error("counter error #21");
         assert(dut.wr_ptr == 4'd1) else $error("wr_ptr error #20");
-        assert(dut.rd_ptr == 4'd2) else $error("rd_ptr error #20");
+        assert(dut.rd_ptr == 4'd3) else $error("rd_ptr error #20");
         assert(dut.full == 1'b0) else $error("full flag error");
         assert(dut.almost_full == 1'b1) else $error("almost_full flag error");
         assert(dut.empty == 1'b0) else $error("empty flag error");
         assert(dut.almost_empty == 1'b0) else $error("almost empty flag error");
         $display("Test 22 finished");
 
-        // test reset
+        // Test 23 - Read entry with data = 8'd4 and Write entry with data = 8'd18 at the same time
+        wr_en = 1'b1;
+        rd_en = 1'b1;
+        wr_data = 8'd18;
+        #20;
+        // [ 17, 18, null, null, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ]
+        assert(rd_data == 8'd4) else $error("Read Data Error #5");
+        assert(dut.memory[1] == 8'd18) else $error("Data memory Error #21");
+        assert(dut.counter == 5'd14) else $error("counter error #22");
+        assert(dut.wr_ptr == 4'd2) else $error("wr_ptr error #21");
+        assert(dut.rd_ptr == 4'd4) else $error("rd_ptr error #21");
+        assert(dut.full == 1'b0) else $error("full flag error");
+        assert(dut.almost_full == 1'b1) else $error("almost_full flag error");
+        assert(dut.empty == 1'b0) else $error("empty flag error");
+        assert(dut.almost_empty == 1'b0) else $error("almost empty flag error");
+        $display("Test 23 finished");
 
-        // test empty read
+        // Test 24 - Test Reset (both pointers should start at same place)
+        wr_en = 1'b0;
+        rd_en = 1'b0;
+        wr_data = 8'd0;
+        reset_n = 1'b0;
+        #20;
+        // [ 17, 18, null, null, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ]
+        assert(rd_data == 8'd4) else $error("Read Data Error #6"); // read data should stay the same
+        assert(dut.memory[0] == 8'd17) else $error("Data memory Error #22"); // data in memory should stay the same as well
+        assert(dut.counter == 5'd0) else $error("counter error #23");
+        assert(dut.wr_ptr == 4'd0) else $error("wr_ptr error #22");
+        assert(dut.rd_ptr == 4'd0) else $error("rd_ptr error #22");
+        assert(dut.full == 1'b0) else $error("full flag error");
+        assert(dut.almost_full == 1'b0) else $error("almost_full flag error");
+        assert(dut.empty == 1'b1) else $error("empty flag error");
+        assert(dut.almost_empty == 1'b1) else $error("almost empty flag error");
+        $display("Test 24 finished");
 
-        // test simultaneous read + write
+        // Test 25 - Test read WHEN FIFO IS EMPTY (ptr, counter, memory, rd_data should stay same)
+        rd_en = 1'b1;
+        reset_n = 1'b1;
+        #20;
+        // [ 17, 18, null, null, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ]
+        assert(rd_data == 8'd4) else $error("Read Data Error #7"); // read data should stay the same
+        assert(dut.memory[0] == 8'd17) else $error("Data memory Error #23"); // data in memory should stay the same as well
+        assert(dut.counter == 5'd0) else $error("counter error #24");
+        assert(dut.wr_ptr == 4'd0) else $error("wr_ptr error #23");
+        assert(dut.rd_ptr == 4'd0) else $error("rd_ptr error #23");
+        assert(dut.full == 1'b0) else $error("full flag error");
+        assert(dut.almost_full == 1'b0) else $error("almost_full flag error");
+        assert(dut.empty == 1'b1) else $error("empty flag error");
+        assert(dut.almost_empty == 1'b1) else $error("almost empty flag error");
+        $display("Test 25 finished");
+
+        // Test 26 - Test Simultaneous Read + Write WHEN FIFO IS EMPTY (should change nothing)
+        wr_en = 1'b1;
+        wr_data = 8'd19;
+        rd_en = 1'b1;
+        reset_n = 1'b1;
+        #20;
+        // [ 17, 18, null, null, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ]
+        assert(rd_data == 8'd4) else $error("Read Data Error #8"); // read data should stay the same
+        assert(dut.memory[0] == 8'd17) else $error("Data memory Error #24"); // data in memory should stay the same as well
+        assert(dut.counter == 5'd0) else $error("counter error #25");
+        assert(dut.wr_ptr == 4'd0) else $error("wr_ptr error #24");
+        assert(dut.rd_ptr == 4'd0) else $error("rd_ptr error #24");
+        assert(dut.full == 1'b0) else $error("full flag error");
+        assert(dut.almost_full == 1'b0) else $error("almost_full flag error");
+        assert(dut.empty == 1'b1) else $error("empty flag error");
+        assert(dut.almost_empty == 1'b1) else $error("almost empty flag error");
+        $display("Test 26 finished");
+
+        // Test 27 - Write entry with data 8'd19
+        wr_en = 1'b1;
+        wr_data = 8'd19;
+        rd_en = 1'b0;
+        #20;
+        // [ 19, 18, null, null, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ]
+        assert(rd_data == 8'd4) else $error("Read Data Error #9"); // read data should stay the same
+        assert(dut.memory[0] == 8'd19) else $error("Data memory Error #25"); // data in memory should stay the same as well
+        assert(dut.counter == 5'd1) else $error("counter error #26");
+        assert(dut.wr_ptr == 4'd1) else $error("wr_ptr error #25");
+        assert(dut.rd_ptr == 4'd0) else $error("rd_ptr error #25");
+        assert(dut.full == 1'b0) else $error("full flag error");
+        assert(dut.almost_full == 1'b0) else $error("almost_full flag error");
+        assert(dut.empty == 1'b0) else $error("empty flag error");
+        assert(dut.almost_empty == 1'b1) else $error("almost empty flag error");
+        $display("Test 27 finished");
+
+
+        // Test 28 - Simultaneous read + write again
+        wr_en = 1'b1;
+        wr_data = 8'd20;
+        rd_en = 1'b0;
+        #20;
+        // [ 19, 20, null, null, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ]
+        assert(rd_data == 8'd19) else $error("Read Data Error #10"); // read data should stay the same
+        assert(dut.memory[0] == 8'd20) else $error("Data memory Error #26"); // data in memory should stay the same as well
+        assert(dut.counter == 5'd1) else $error("counter error #27");
+        assert(dut.wr_ptr == 4'd2) else $error("wr_ptr error #26");
+        assert(dut.rd_ptr == 4'd1) else $error("rd_ptr error #26");
+        assert(dut.full == 1'b0) else $error("full flag error");
+        assert(dut.almost_full == 1'b0) else $error("almost_full flag error");
+        assert(dut.empty == 1'b0) else $error("empty flag error");
+        assert(dut.almost_empty == 1'b1) else $error("almost empty flag error");
+        $display("Test 27 finished");
 
         $display("All tests finished");
         $finish;
