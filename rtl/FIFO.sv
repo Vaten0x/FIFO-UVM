@@ -32,7 +32,7 @@ module FIFO #(
             wr_ptr <= 0;
             rd_ptr <= 0;
             counter <= 0;
-        end else if (wr_en && rd_en && !full & !empty) begin
+        end else if (wr_en && rd_en && !full && !empty) begin
             // Simultaneous read and write logic
             memory[wr_ptr] <= wr_data;
             wr_ptr <= (wr_ptr == 5'd15) ? 5'd0 : wr_ptr + 1'b1;
@@ -54,5 +54,5 @@ module FIFO #(
             memory <= memory;
         end
     end
-    
+
 endmodule

@@ -432,8 +432,8 @@ module FIFO_tb(); //simple testbench
         rd_en = 1'b1;
         #20;
         // [ 17, 18, null, null, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ]
-        $display("rd_data: ", rd_data);
         $display("dut.memory[0]: ", dut.memory[0]);
+        $display("dut.counter: ", dut.counter);
         assert(rd_data == 8'd4) else $error("Read Data Error #8"); // read data should stay the same
         assert(dut.memory[0] == 8'd17) else $error("Data memory Error #24"); // data in memory should stay the same as well
         assert(dut.counter == 5'd0) else $error("counter error #25");
