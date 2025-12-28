@@ -13,6 +13,8 @@ module FIFO_tb_random();
     logic almost_full;
     logic almost_empty;
 
+    logic [7:0] queue_ref [$];
+
     FIFO #(
         .DATA_WIDTH(DATA_WIDTH),
         .DEPTH(DEPTH)
@@ -44,7 +46,33 @@ module FIFO_tb_random();
         reset_n = 1'b1; //reset off
         @(posedge clk);
 
+        repeat(500) begin
+            logic do_write, do_read;
+            logic [7:0] test_data;
 
+            do_write = $urandom(0, 1);
+            do_read = $urandom(0, 1);
+            test_data = $urandom(0, 255);
+
+            wr_en = do_write;
+            rd_en = do_read;
+            wr_data = test_data;
+
+            if (do_write && !dut.full) begin
+                queue_ref.push_back(test_data);
+            end
+
+            @(posedge clk);
+
+            if ($past(do_read) && $past(!dut.empty)) begin
+                logic [7:0] expected_result;
+                expected_result = queue_ref.pop_front();
+
+                assert(rd_data == expected_result) else $error("Data Output Mismatch Counter=%0d, Queue=%0d", dut.counter, queue_ref.size());
+            end
+
+            $finish
+        end
     end
 
     initial begin
