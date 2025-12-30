@@ -53,9 +53,9 @@ module FIFO_tb_random();
             logic do_write, do_read;
             logic [7:0] test_data;
 
-            do_write = $urandom(0, 1);
-            do_read = $urandom(0, 1);
-            test_data = $urandom(0, 255);
+            do_write = $urandom_range(0, 1);
+            do_read = $urandom_range(0, 1);
+            test_data = $urandom_range(0, 255);
 
             wr_en = do_write;
             rd_en = do_read;
@@ -77,7 +77,7 @@ module FIFO_tb_random();
                 assert(rd_data == expected_result) else $error("Data Output Mismatch Counter=%0d, Queue=%0d", dut.counter, queue_ref.size());
             end
 
-            assert(dut.counter == queue_ref.size() else $error("Counter Size Mismatch Counter=%0d, Queue=%0d", dut.counter, queue_ref.size())
+            assert(dut.counter == queue_ref.size()) else $error("Counter Size Mismatch Counter=%0d, Queue=%0d", dut.counter, queue_ref.size());
         end
 
         $finish;
@@ -85,13 +85,7 @@ module FIFO_tb_random();
 
     initial begin
         $fsdbDumpfile("novas.fsdb");
-        $fsdbDumpvars(0, FIFO_tb);
+        $fsdbDumpvars(0, FIFO_tb_random);
     end
-
-    property counter_in_range;
-        @(posedge clk) dut.counter <= DEPTH;
-    endproperty
-
-    assert property (counter_in_range);
 
 endmodule

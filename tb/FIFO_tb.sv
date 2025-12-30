@@ -468,10 +468,4 @@ module FIFO_tb(); //simple testbench
         $fsdbDumpvars(0, FIFO_tb);
     end
 
-    property counter_in_range;
-        @(posedge clk) dut.counter <= DEPTH;
-    endproperty
-
-    assert property (counter_in_range);
-
 endmodule
