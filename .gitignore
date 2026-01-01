@@ -20,3 +20,6 @@ novas_dump.log
 .inter.fsdb*
 inter.fsdb*
 .vcs*
+
+# UVM generated files
+vc_hdrs.h
