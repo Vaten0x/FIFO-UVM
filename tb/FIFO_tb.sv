@@ -348,9 +348,11 @@ module FIFO_tb(); //simple testbench
         assert(dut.almost_empty == 1'b0) else $error("almost empty flag error");
         $display("Test 20 finished");
 
-        // Test 21 - Read entry with data = 8'd2 WHEN FIFO IS FULL
+        // Test 21 - Test Simultaneous Read + Write WHEN FIFO IS FULL (the read should only operate here)
+        // It should not write any new entries, only the read should operate here (the data = 8'd2 one)
+        wr_en = 1'b1;
         rd_en = 1'b1;
-        wr_en = 1'b0;
+        wr_data = 8'd18;
         #20;
         // [ 17, null, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ]
         assert(rd_data == 8'd2) else $error("Read Data Error #3");
@@ -365,6 +367,7 @@ module FIFO_tb(); //simple testbench
         $display("Test 21 finished");
 
         // Test 22 - Read entry with data = 8'd3
+        wr_en = 1'b0;
         rd_en = 1'b1;
         #20;
         // [ 17, null, null, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ]

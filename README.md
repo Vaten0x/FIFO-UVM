@@ -35,3 +35,48 @@ Things to test:
 - Simultaneous read and write operations (even when empty and full, only the write should operate if empty and read if full)
 - Illegal operations (writing when full, reading when empty)
 - Wrap-around behavior of read and write pointers (ring buffer implementation)
+
+
+For UVM-FIFO:
+```
+/bin/tcsh
+
+source /CMC/scripts/synopsys.vcs_verdi.2024.09-SP1.csh
+
+cd ~/FIFO-UVM
+
+vcs -sverilog -timescale=1ns/1ps -full64 -debug_access+all -kdb rtl/FIFO.sv tb/FIFO_tb.sv tb/FIFO_tb_random.sv -o simv
+```
+
+Then do this to open Verdi + run simulation
+```
+./simv
+
+verdi -ssf novas.fsdb -dbdir simv.daidir &
+```
+or (this one is slow)
+```
+./simv -gui=verdi
+```
+
+For coverage (FIFO):
+
+VCS Compilation
+```
+vcs -sverilog -timescale=1ns/1ps -full64 -debug_access+all -kdb -cm line+cond+fsm+tgl -cm_dir fifo_cov.vdb rtl/FIFO.sv tb/FIFO_tb.sv -o simv
+```
+
+Simulation with coverage collector
+```
+./simv -cm line+cond+fsm+tgl -cm_dir fifo_cov.vdb -cm_name simple_test
+```
+
+View coverage result with Verdi
+```
+verdi -cov -covdir fifo_cov.vdb -ssf novas.fsdb &
+```
+
+To Clean:
+```
+rm -rf simv* csrc *.daidir AN.DB work *.log
+```
