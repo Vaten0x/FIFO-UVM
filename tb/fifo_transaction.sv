@@ -1,4 +1,4 @@
-class fifo_transaction extends uvm_sequence_items;
+class fifo_transaction extends uvm_sequence_item;
     // Inputs - what i want to send to FIFO
     rand bit [7:0] wr_data;
     rand bit wr_en;
@@ -30,8 +30,8 @@ class fifo_transaction extends uvm_sequence_items;
 
     // Constraints
     constraint c_valid_ops {
-        wr_en dist {0:50, 1:50};
-        rd_en dist {0:50, 1:50};
+        wr_en dist {0:=50, 1:=50};
+        rd_en dist {0:=50, 1:=50};
     }
 
 endclass
