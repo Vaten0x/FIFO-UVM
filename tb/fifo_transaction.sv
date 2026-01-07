@@ -16,11 +16,23 @@ class fifo_transaction extends uvm_sequence_items;
     `uvm_field_int(wr_data, UVM_ALL_ON)
     `uvm_field_int(wr_en, UVM_ALL_ON)
     `uvm_field_int(rd_en, UVM_ALL_ON)
+    `uvm_field_int(rd_data, UVM_ALL_ON)
+    `uvm_field_int(full, UVM_ALL_ON)
+    `uvm_field_int(almost_full, UVM_ALL_ON)
+    `uvm_field_int(almost_empty, UVM_ALL_ON)
+    `uvm_field_int(empty, UVM_ALL_ON)
     `uvm_object_utils_end
 
     // Constructors
+    function new(string name="fifo_transaction");
+        super.new(name);
+    endfunction
 
     // Constraints
+    constraint c_valid_ops {
+        wr_en dist {0:50, 1:50};
+        rd_en dist {0:50, 1:50};
+    }
 
 endclass
 
