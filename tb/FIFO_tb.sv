@@ -1,4 +1,4 @@
-module FIFO_tb(); //simple testbench
+module FIFO_tb(); //simple testbench with SystemVerilog
     localparam DATA_WIDTH = 8;
     localparam DEPTH = 16;
 

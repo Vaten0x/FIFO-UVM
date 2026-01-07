@@ -32,6 +32,7 @@ class fifo_transaction extends uvm_sequence_item;
     constraint c_valid_ops {
         wr_en dist {0:=50, 1:=50};
         rd_en dist {0:=50, 1:=50};
+        // no constraint for wr_data since it's uniform random already
     }
 
 endclass
