@@ -2,10 +2,9 @@
 `include "uvm_macros.svh"
 import uvm_pkg::*;
 
-// `include "fifo_test.sv"
-// `include "fifo_env.sv"
 `include "tb/fifo_transaction.sv"
 `include "tb/fifo_if.sv"
+`include "tb/fifo_driver.sv"
 
 module top_tb;
 
