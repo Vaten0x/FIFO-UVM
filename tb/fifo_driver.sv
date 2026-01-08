@@ -4,7 +4,7 @@ class fifo_driver extends uvm_driver#(fifo_transaction);
     `uvm_component_utils(fifo_driver)
     
     // Virtual interface handle
-    virtual fifo_if.DRIVER vif;
+    virtual fifo_if vif;
     
     // Constructor
     function new(string name = "fifo_driver", uvm_component parent = null);
