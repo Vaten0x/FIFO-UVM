@@ -25,7 +25,7 @@ class fifo_driver extends uvm_driver#(fifo_transaction);
         fifo_transaction req;
         
         // Wait for reset
-        wait(vif.driver_cb.reset_n);
+        wait(vif.reset_n);
         `uvm_info(get_type_name(), "Reset deasserted, starting to drive transactions", UVM_LOW)
         
         forever begin

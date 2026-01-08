@@ -37,9 +37,15 @@ interface fifo_if(input logic clk, input logic reset_n);
     endclocking
     
     // Modport for driver (what driver can access)
-    modport DRIVER (clocking driver_cb);
+    modport DRIVER (
+        clocking driver_cb, 
+        input clk, reset_n
+    );
     
     // Modport for monitor (what monitor can access)
-    modport MONITOR (clocking monitor_cb);
+    modport MONITOR (
+        clocking monitor_cb, 
+        input clk, reset_n
+    );
 
 endinterface
