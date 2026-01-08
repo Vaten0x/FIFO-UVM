@@ -4,8 +4,8 @@ import uvm_pkg::*;
 
 // `include "fifo_test.sv"
 // `include "fifo_env.sv"
-`include "fifo_transaction.sv"
-`include "fifo_if.sv"
+`include "tb/fifo_transaction.sv"
+`include "tb/fifo_if.sv"
 
 module top_tb;
 

@@ -10,7 +10,20 @@ interface fifo_if(input logic clk, input logic reset_n);
     logic almost_full;
     logic almost_empty;
 
-     // Clocking block for monitor (observe everything)
+    // Driver clocking block
+    clocking driver_cb @(posedge clk);
+        default input #1ns output #1ns;
+        output wr_en;
+        output wr_data;
+        output rd_en;
+        input  rd_data;
+        input  full;
+        input  empty;
+        input  almost_full;
+        input  almost_empty;
+    endclocking
+
+    // Clocking block for monitor (observe everything)
     clocking monitor_cb @(posedge clk);
         default input #1ns output #1ns; // delays to avoid setup/hold time restrictions
         input wr_en;
@@ -24,17 +37,9 @@ interface fifo_if(input logic clk, input logic reset_n);
     endclocking
     
     // Modport for driver (what driver can access)
-    modport DRIVER (
-        clocking driver_cb,
-        input clk,
-        input reset_n
-    );
+    modport DRIVER (clocking driver_cb);
     
     // Modport for monitor (what monitor can access)
-    modport MONITOR (
-        clocking monitor_cb,
-        input clk,
-        input reset_n
-    );
+    modport MONITOR (clocking monitor_cb);
 
 endinterface
