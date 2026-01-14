@@ -54,4 +54,10 @@ module top_tb;
         
         run_test();
     end
+
+    // enable fsdb to view it on verdi
+    initial begin
+        $fsdbDumpfile("fifo_uvm.fsdb");
+        $fsdbDumpvars(0, top_tb);
+    end
 endmodule
