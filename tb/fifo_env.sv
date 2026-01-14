@@ -5,6 +5,7 @@ class fifo_env extends uvm_env;
     
     // Components
     fifo_agent agent;
+    fifo_scoreboard scoreboard;
     
     // Constructor
     function new(string name = "fifo_env", uvm_component parent = null);
@@ -19,6 +20,9 @@ class fifo_env extends uvm_env;
         
         // Create the agent
         agent = fifo_agent::type_id::create("agent", this);
+
+        // Create the scoreboard
+        scoreboard = fifo_scoreboard::type_id::create("scoareboard", this);
     endfunction
     
     // Connect phase - nothing to connect yet (we'll add scoreboard later)
