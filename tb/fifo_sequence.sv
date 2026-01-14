@@ -18,7 +18,7 @@ class fifo_random_sequence extends fifo_base_sequence;
     rand int num_trans;
 
     constraint c_num_trans {
-        num_trans inside {[50:200]} //between 50 to 200 transactions
+        num_trans inside {[50:200]}; //between 50 to 200 transactions
     }
 
     function new(string name = "fifo_random_sequence");

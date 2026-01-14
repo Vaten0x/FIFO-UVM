@@ -1,0 +1,1 @@
+typedef uvm_sequencer#(fifo_transaction) fifo_sequencer;

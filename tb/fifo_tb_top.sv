@@ -2,9 +2,13 @@
 `include "uvm_macros.svh"
 import uvm_pkg::*;
 
-`include "tb/fifo_transaction.sv"
 `include "tb/fifo_if.sv"
+`include "tb/fifo_agent.sv"
 `include "tb/fifo_driver.sv"
+`include "tb/fifo_sequencer.sv"
+`include "tb/fifo_sequence.sv"
+`include "tb/fifo_transaction.sv"
+
 
 module top_tb;
 
