@@ -7,6 +7,7 @@ import uvm_pkg::*;
 `include "tb/fifo_sequencer.sv"
 `include "tb/fifo_driver.sv"
 `include "tb/fifo_sequence.sv"
+`include "tb/fifo_monitor.sv"
 `include "tb/fifo_agent.sv"
 `include "tb/fifo_env.sv"
 `include "tb/fifo_test.sv"

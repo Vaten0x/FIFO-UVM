@@ -6,7 +6,7 @@ class fifo_agent extends uvm_agent;
     // Components
     fifo_sequencer sequencer;
     fifo_driver    driver;
-    // fifo_monitor   monitor;  // We'll add this later
+    fifo_monitor   monitor;  // We'll add this later
     
     // Configuration - is this agent active or passive?
     uvm_active_passive_enum is_active = UVM_ACTIVE;
@@ -23,7 +23,7 @@ class fifo_agent extends uvm_agent;
         `uvm_info(get_type_name(), "Build phase", UVM_HIGH)
         
         // Create monitor (always created - needed for both active/passive)
-        // monitor = fifo_monitor::type_id::create("monitor", this);
+        monitor = fifo_monitor::type_id::create("monitor", this);
         
         // Create driver and sequencer only if active
         if (is_active == UVM_ACTIVE) begin
