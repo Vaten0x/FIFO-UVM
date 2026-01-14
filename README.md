@@ -80,3 +80,6 @@ To Clean:
 ```
 rm -rf simv* csrc *.daidir AN.DB work *.log
 ```
+
+![UVM Architecture](image.png)
+image taken from https://vlsiverify.com/uvm/uvm-environment/
