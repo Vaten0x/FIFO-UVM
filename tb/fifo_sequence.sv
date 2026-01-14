@@ -92,3 +92,45 @@ class fifo_write_sequence extends fifo_base_sequence;
         `uvm_info(get_type_name(), "Write sequence completed", UVM_LOW)
     endtask
 endclass
+
+// empty FIFO
+class fifo_read_sequence extends fifo_base_sequence;
+    
+    `uvm_object_utils(fifo_read_sequence)
+    
+    rand int num_reads;
+    
+    constraint c_num_reads {
+        num_reads inside {[10:20]};
+    }
+    
+    function new(string name = "fifo_read_sequence");
+        super.new(name);
+    endfunction
+    
+    task body();
+        fifo_transaction req;
+        
+        `uvm_info(get_type_name(), 
+                  $sformatf("Starting read sequence with %0d reads", num_reads), 
+                  UVM_LOW)
+        
+        repeat(num_reads) begin
+            req = fifo_transaction::type_id::create("req");
+            start_item(req);
+            
+            // Constrain to only reads
+            if (!req.randomize() with {
+                wr_en == 0;   // Never write
+                rd_en == 1;   // Always read
+            }) begin
+                `uvm_error(get_type_name(), "Randomization failed!")
+            end
+            
+            finish_item(req);
+        end
+        
+        `uvm_info(get_type_name(), "Read sequence completed", UVM_LOW)
+    endtask
+    
+endclass
