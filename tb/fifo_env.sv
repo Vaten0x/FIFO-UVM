@@ -28,6 +28,11 @@ class fifo_env extends uvm_env;
     // Connect phase - nothing to connect yet (we'll add scoreboard later)
     function void connect_phase(uvm_phase phase);
         super.connect_phase(phase);
+
+        `uvm_info(get_type_name(), "Connect phase", UVM_MEDIUM)
+
+        // Connect monitor to scoreboard
+        agent.monitor.analysis_port.connect(scoreboard.analysis_export);
         
         `uvm_info(get_type_name(), "Connect phase", UVM_MEDIUM)
     endfunction
