@@ -9,6 +9,7 @@ ucli.key
 cm.log
 vdCov.conf
 .fsm.sch.verilog.xml
+coverage.vdb/
 
 # Verdi generated files
 verdiLog/
