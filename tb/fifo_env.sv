@@ -6,6 +6,7 @@ class fifo_env extends uvm_env;
     // Components
     fifo_agent agent;
     fifo_scoreboard scoreboard;
+    fifo_coverage coverage;
     
     // Constructor
     function new(string name = "fifo_env", uvm_component parent = null);
@@ -23,6 +24,9 @@ class fifo_env extends uvm_env;
 
         // Create the scoreboard
         scoreboard = fifo_scoreboard::type_id::create("scoareboard", this);
+
+        // Create the coverage collector (subscriber)
+        coverage = fifo_coverage::type_id::create("coverage", this);
     endfunction
     
     // Connect phase - nothing to connect yet (we'll add scoreboard later)
@@ -33,8 +37,11 @@ class fifo_env extends uvm_env;
 
         // Connect monitor to scoreboard
         agent.monitor.analysis_port.connect(scoreboard.analysis_export);
+
+        // Connect monitor to coverage collector
+        agent.monitor.analysis_port.connect(coverage.analysis_export);
         
-        `uvm_info(get_type_name(), "Connect phase", UVM_MEDIUM)
+        `uvm_info(get_type_name(), "Monitor connected to scoreboard and coverage", UVM_MEDIUM)
     endfunction
     
 endclass
