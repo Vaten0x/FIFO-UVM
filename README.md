@@ -83,3 +83,39 @@ rm -rf simv* csrc *.daidir AN.DB work *.log
 
 ![UVM Architecture](image.png)
 image taken from https://vlsiverify.com/uvm/uvm-environment/
+
+
+## Coverage Results
+
+### Code Coverage (Structural)
+- **Overall Score:** 95.55%
+- Line Coverage: 100%
+- Branch Coverage: 90%
+- Condition Coverage: 93.55%
+- Toggle Coverage: 98.65%
+
+### Functional Coverage (Behavioral)
+- **Overall Coverage:** 97.22%
+- Write operations: 100%
+- Read operations: 100%
+- Full flag scenarios: 100%
+- Empty flag scenarios: 100%
+- Almost-full scenarios: 100%
+- Almost-empty scenarios: 100%
+- Simultaneous read/write: 100%
+- Data patterns: 66.67% (minor gap: 0xFF pattern)
+
+### Critical Scenarios Tested
+✓ FIFO completely full (16 items)
+✓ FIFO completely empty (0 items)
+✓ Write when full (boundary condition)
+✓ Read when empty (boundary condition)
+✓ Simultaneous read/write operations
+✓ Almost-full flag transitions
+✓ Almost-empty flag transitions
+
+System Verilog Assertion Testbench Coverage shown in Verdi
+![alt text](image-1.png)
+
+UVM Testbench Coverage shown in Verdi
+![alt text](image-2.png)
