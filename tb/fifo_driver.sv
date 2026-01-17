@@ -36,13 +36,13 @@ class fifo_driver extends uvm_driver#(fifo_transaction);
             seq_item_port.get_next_item(req);
 
             // Record transaction start
-            void'(begin_tr(tr, "Driver_Transaction"));
+            void'(begin_tr(req, "Driver_Transaction"));
             
             // Drive the transaction
             drive_transaction(req);
 
             // Record transaction end
-            end_tr(tr);
+            end_tr(req);
             
             // Tell sequencer we're done
             seq_item_port.item_done();
