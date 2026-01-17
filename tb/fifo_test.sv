@@ -17,6 +17,9 @@ class fifo_base_test extends uvm_test;
     // Build phase - create environment
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
+
+        // Enable transaction recording for Verdi
+        uvm_config_db#(int)::set(this, "*", "recording_detail", UVM_FULL);
         
         `uvm_info(get_type_name(), "Build phase", UVM_MEDIUM)
         
@@ -30,6 +33,9 @@ class fifo_base_test extends uvm_test;
         
         // Print testbench hierarchy
         uvm_top.print_topology();
+
+        // Enable all recording
+        uvm_config_db#(int)::set(null, "*", "recording_detail", UVM_FULL);
     endfunction
     
     // Report phase - print summary

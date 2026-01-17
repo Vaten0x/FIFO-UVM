@@ -26,6 +26,8 @@ class fifo_transaction extends uvm_sequence_item;
     // Constructors
     function new(string name="fifo_transaction");
         super.new(name);
+
+        enable_recording("fifo_transaction_stream");
     endfunction
 
     // Constraints

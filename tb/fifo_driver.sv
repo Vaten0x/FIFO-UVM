@@ -14,6 +14,9 @@ class fifo_driver extends uvm_driver#(fifo_transaction);
     // Build phase - get interface from config_db
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
+
+        // Enable recording for this driver
+        set_report_verbosity_level(UVM_FULL);
         
         if (!uvm_config_db#(virtual fifo_if)::get(this, "", "vif", vif)) begin
             `uvm_fatal(get_type_name(), "Virtual interface not found in config_db!")
@@ -31,9 +34,15 @@ class fifo_driver extends uvm_driver#(fifo_transaction);
         forever begin
             // Get transaction from sequencer
             seq_item_port.get_next_item(req);
+
+            // Record transaction start
+            void'(begin_tr(tr, "Driver_Transaction"));
             
             // Drive the transaction
             drive_transaction(req);
+
+            // Record transaction end
+            end_tr(tr);
             
             // Tell sequencer we're done
             seq_item_port.item_done();
