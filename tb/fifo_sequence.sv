@@ -195,7 +195,7 @@ class fifo_all_ones_sequence extends uvm_sequence #(fifo_transaction);
             start_item(tx);
             tx.wr_en = 1;
             tx.rd_en = 0;
-            tx.wr_data = 16'hFFFF;  // This is the missing coverage!
+            tx.wr_data = 8'hFF;
             finish_item(tx);
         end
         

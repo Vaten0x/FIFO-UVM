@@ -40,8 +40,8 @@ class fifo_coverage extends uvm_subscriber#(fifo_transaction);
         // Data values - sample a few interesting patterns
         wr_data_cp: coverpoint wr_data {
             bins zero = {8'h00};
-            bins all_ones = {16'hFFFF};
-            bins mid_range = {[16'h0001:16'hFFFE]};
+            bins all_ones = {8'hFF};
+            bins mid_range = {[8'h01:8'hFE]};
             bins others = default;
         }
         
