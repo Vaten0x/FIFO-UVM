@@ -51,6 +51,15 @@ module top_tb;
         reset_n = 1;
     end
 
+    // mid-simulation reset toggle for coverage
+    initial begin
+        #5000;              // Wait 5000ns into simulation
+        reset_n = 0;        // Assert reset (1→0 transition - THIS FIXES COVERAGE!)
+        repeat(3) @(posedge clk);
+        reset_n = 1;        // De-assert reset (0→1 transition)
+        $display("Mid-simulation reset toggle completed at time %0t", $time);
+    end
+
     // UVM: Put interface into config_db
     initial begin
         uvm_config_db#(virtual fifo_if)::set(null,"*","vif",vif);

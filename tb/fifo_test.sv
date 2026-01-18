@@ -137,7 +137,6 @@ class fifo_coverage_test extends fifo_base_test;
     endfunction
     
     task run_phase(uvm_phase phase);
-        fifo_transaction tx;
         
         `uvm_info(get_type_name(), "Starting coverage test", UVM_LOW)
         
@@ -170,123 +169,65 @@ class fifo_coverage_test extends fifo_base_test;
     
     // Helper: Run random operations
     task run_random_ops(int num);
-        fifo_transaction tx;
-        repeat(num) begin
-            tx = fifo_transaction::type_id::create("tx");
-            assert(tx.randomize());
-            env.agent.sequencer.send_request(tx);
-            env.agent.sequencer.wait_for_grant();
-            env.agent.sequencer.send_item(tx);
-            env.agent.sequencer.wait_for_item_done();
-        end
+        fifo_random_sequence seq;
+        seq = fifo_random_sequence::type_id::create("seq");
+        seq.num_trans = num;
+        seq.start(env.agent.sequencer);
     endtask
     
     // Test 1: Reset during operation (1→0 toggle)
     task test_reset_during_operation();
-        fifo_transaction tx;
+        fifo_reset_sequence seq;
         
         `uvm_info(get_type_name(), "Testing reset during operation", UVM_MEDIUM)
         
-        // Write some data first
-        repeat(8) begin
-            tx = fifo_transaction::type_id::create("tx");
-            assert(tx.randomize() with {wr_en == 1; rd_en == 0;});
-            env.agent.sequencer.send_request(tx);
-            env.agent.sequencer.wait_for_grant();
-            env.agent.sequencer.send_item(tx);
-            env.agent.sequencer.wait_for_item_done();
-        end
-        
-        // Assert reset (THIS IS THE MISSING 1→0 TOGGLE!)
-        repeat(3) begin
-            tx = fifo_transaction::type_id::create("tx");
-            tx.reset_n = 0;  // Force reset active
-            tx.wr_en = 0;
-            tx.rd_en = 0;
-            env.agent.sequencer.send_request(tx);
-            env.agent.sequencer.wait_for_grant();
-            env.agent.sequencer.send_item(tx);
-            env.agent.sequencer.wait_for_item_done();
-        end
-        
-        // De-assert reset
-        tx = fifo_transaction::type_id::create("tx");
-        tx.reset_n = 1;
-        tx.wr_en = 0;
-        tx.rd_en = 0;
-        env.agent.sequencer.send_request(tx);
-        env.agent.sequencer.wait_for_grant();
-        env.agent.sequencer.send_item(tx);
-        env.agent.sequencer.wait_for_item_done();
+        seq = fifo_reset_sequence::type_id::create("seq");
+        seq.start(env.agent.sequencer);
         
         #100;
     endtask
     
-    // Test 2: Write pointer wraparound (wr_ptr goes 15→0)
+    // Test 2: Write pointer wraparound
     task test_write_wraparound();
-        fifo_transaction tx;
+        fifo_write_sequence seq;
         
         `uvm_info(get_type_name(), "Testing write pointer wraparound", UVM_MEDIUM)
         
-        // Write 20 items to guarantee wraparound (DEPTH=16)
-        repeat(20) begin
-            tx = fifo_transaction::type_id::create("tx");
-            assert(tx.randomize() with {wr_en == 1; rd_en == 0;});
-            env.agent.sequencer.send_request(tx);
-            env.agent.sequencer.wait_for_grant();
-            env.agent.sequencer.send_item(tx);
-            env.agent.sequencer.wait_for_item_done();
-        end
+        seq = fifo_write_sequence::type_id::create("seq");
+        seq.num_writes = 20;  // Wraparound for DEPTH=16
+        seq.start(env.agent.sequencer);
         
         #100;
     endtask
     
-    // Test 3: Read pointer wraparound (rd_ptr goes 15→0)
+    // Test 3: Read pointer wraparound
     task test_read_wraparound();
-        fifo_transaction tx;
+        fifo_write_sequence write_seq;
+        fifo_read_sequence read_seq;
         
         `uvm_info(get_type_name(), "Testing read pointer wraparound", UVM_MEDIUM)
         
         // First fill FIFO
-        repeat(16) begin
-            tx = fifo_transaction::type_id::create("tx");
-            assert(tx.randomize() with {wr_en == 1; rd_en == 0;});
-            env.agent.sequencer.send_request(tx);
-            env.agent.sequencer.wait_for_grant();
-            env.agent.sequencer.send_item(tx);
-            env.agent.sequencer.wait_for_item_done();
-        end
+        write_seq = fifo_write_sequence::type_id::create("write_seq");
+        write_seq.num_writes = 16;
+        write_seq.start(env.agent.sequencer);
         
-        // Now read 20 times to wrap rd_ptr
-        repeat(20) begin
-            tx = fifo_transaction::type_id::create("tx");
-            assert(tx.randomize() with {wr_en == 0; rd_en == 1;});
-            env.agent.sequencer.send_request(tx);
-            env.agent.sequencer.wait_for_grant();
-            env.agent.sequencer.send_item(tx);
-            env.agent.sequencer.wait_for_item_done();
-        end
+        // Then read more than DEPTH to wrap
+        read_seq = fifo_read_sequence::type_id::create("read_seq");
+        read_seq.num_reads = 20;
+        read_seq.start(env.agent.sequencer);
         
         #100;
     endtask
     
-    // Test 4: All-ones data pattern (fixes functional coverage)
+    // Test 4: All-ones data pattern
     task test_all_ones_data();
-        fifo_transaction tx;
+        fifo_all_ones_sequence seq;
         
         `uvm_info(get_type_name(), "Testing all-ones data pattern", UVM_MEDIUM)
         
-        // Write 16'hFFFF specifically
-        repeat(5) begin
-            tx = fifo_transaction::type_id::create("tx");
-            tx.wr_en = 1;
-            tx.rd_en = 0;
-            tx.wr_data = 16'hFFFF;  // This hits the all_ones bin!
-            env.agent.sequencer.send_request(tx);
-            env.agent.sequencer.wait_for_grant();
-            env.agent.sequencer.send_item(tx);
-            env.agent.sequencer.wait_for_item_done();
-        end
+        seq = fifo_all_ones_sequence::type_id::create("seq");
+        seq.start(env.agent.sequencer);
         
         #100;
     endtask
