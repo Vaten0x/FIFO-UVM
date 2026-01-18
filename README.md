@@ -37,29 +37,7 @@ Things to test:
 - Wrap-around behavior of read and write pointers (ring buffer implementation)
 
 
-For UVM-FIFO:
-```
-/bin/tcsh
-
-source /CMC/scripts/synopsys.vcs_verdi.2024.09-SP1.csh
-
-cd ~/FIFO-UVM
-
-vcs -sverilog -timescale=1ns/1ps -full64 -debug_access+all -kdb rtl/FIFO.sv tb/FIFO_tb.sv tb/FIFO_tb_random.sv -o simv
-```
-
-Then do this to open Verdi + run simulation
-```
-./simv
-
-verdi -ssf novas.fsdb -dbdir simv.daidir &
-```
-or (this one is slow)
-```
-./simv -gui=verdi
-```
-
-For coverage (FIFO):
+For coverage (FIFO-UVM):
 
 VCS Compilation
 ```
@@ -76,11 +54,47 @@ View coverage result with Verdi
 verdi -cov -covdir fifo_cov.vdb -ssf novas.fsdb &
 ```
 
-To Clean:
+To Clean and coverage as well
 ```
-rm -rf simv* csrc *.daidir AN.DB work *.log
+rm -rf fifo_cov.vdb simv* csrc *.log novas.fsdb
 ```
 
+For UVM:
+```
+vcs -sverilog -ntb_opts uvm-1.2 rtl/FIFO.sv tb/fifo_tb_top.sv -o simv
+```
+with Verdi:
+```
+vcs -sverilog -ntb_opts uvm-1.2 -debug_access+all -kdb rtl/FIFO.sv tb/fifo_tb_top.sv -o simv
+```
+with Coverage:
+```
+vcs -sverilog -ntb_opts uvm-1.2 -debug_access+all -kdb -cm line+cond+fsm+tgl+branch rtl/FIFO.sv tb/fifo_tb_top.sv -o simv
+```
+Running it:
+```
+./simv +UVM_TESTNAME=fifo_random_test +UVM_VERBOSITY=UVM_HIGH
+
+./simv +UVM_TESTNAME=fifo_write_read_test +UVM_VERBOSITY=UVM_HIGH
+```
+Run it WITH COVERAGE:
+```
+./simv +UVM_TESTNAME=fifo_random_test +UVM_VERBOSITY=UVM_LOW -cm line+cond+fsm+tgl+branch -cm_name random_test
+
+./simv +UVM_TESTNAME=fifo_write_read_test +UVM_VERBOSITY=UVM_LOW -cm line+cond+fsm+tgl+branch -cm_name write_read_test
+
+./simv +UVM_TESTNAME=fifo_coverage_test +UVM_VERBOSITY=UVM_LOW -cm line+cond+fsm+tgl+branch -cm_name write_read_test
+```
+To view the coverage:
+```
+urg -dir simv.vdb -format both
+
+verdi -cov -covdir simv.vdb -ssf fifo_uvm.fsdb &
+```
+To view UVM structure with Verdi
+```
+./simv -gui +UVM_TESTNAME=fifo_random_test +UVM_VERBOSITY=UVM_HIGH +UVM_VERDI_TRACE="HIER+UVM_AWARE"
+```
 ![UVM Architecture](image.png)
 image taken from https://vlsiverify.com/uvm/uvm-environment/
 
@@ -117,5 +131,8 @@ image taken from https://vlsiverify.com/uvm/uvm-environment/
 System Verilog Assertion Testbench Coverage shown in Verdi
 ![alt text](image-1.png)
 
-UVM Testbench Coverage shown in Verdi
+UVM Testbench Code Coverage shown in Verdi
 ![alt text](image-2.png)
+
+UVM Testbench Functional Coverage (Group) shown in Verdi
+![alt text](image-3.png)
